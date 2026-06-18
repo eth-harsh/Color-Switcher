@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Switcher</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Space Grotesk', sans-serif;
+        background-color: #0f0f0f;
+        color: #f0f0f0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.4rem;
+        transition: background-color 0.5s ease;
+      }
+
+      /* ── Header ── */
+      .header {
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        letter-spacing: -1px;
+        line-height: 1.1;
+      }
+
+      .header p {
+        margin-top: 0.5rem;
+        font-size: 0.95rem;
+        color: #888;
+        font-family: 'Space Mono', monospace;
+      }
+
+      /* ── Color display box ── */
+      .color-box {
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+        background-color: #1e1e1e;
+        border: 2px solid #2a2a2a;
+        transition: background-color 0.4s ease, transform 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .color-box:hover {
+        transform: scale(1.03);
+      }
+
+      /* ── Color name label ── */
+      .color-name {
+        font-family: 'Space Mono', monospace;
+        font-size: 1rem;
+        color: #555;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        min-height: 1.4rem;
+        transition: color 0.3s ease;
+      }
+
+      /* ── Preset color buttons ── */
+      .btn-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .btn {
+        padding: 0.65rem 1.4rem;
+        border: none;
+        border-radius: 8px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease, opacity 0.15s ease;
+        letter-spacing: 0.3px;
+      }
+
+      .btn:hover {
+        opacity: 0.85;
+        transform: translateY(-2px);
+      }
+
+      .btn:active {
+        transform: translateY(0px);
+      }
+
+      .btn-crimson  { background-color: #dc143c; color: #fff; }
+      .btn-ocean    { background-color: #0077b6; color: #fff; }
+      .btn-forest   { background-color: #2d6a4f; color: #fff; }
+      .btn-amber    { background-color: #f4a261; color: #1a1a1a; }
+      .btn-violet   { background-color: #7b2d8b; color: #fff; }
+
+      /* ── Custom hex input section ── */
+      .custom-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .custom-section label {
+        font-size: 0.85rem;
+        color: #666;
+        font-family: 'Space Mono', monospace;
+        letter-spacing: 0.5px;
+      }
+
+      .input-row {
+        display: flex;
+        gap: 0.6rem;
+      }
+
+      .hex-input {
+        padding: 0.6rem 1rem;
+        border: 1.5px solid #2a2a2a;
+        border-radius: 8px;
+        background-color: #1a1a1a;
+        color: #f0f0f0;
+        font-family: 'Space Mono', monospace;
+        font-size: 0.9rem;
+        width: 140px;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      .hex-input:focus {
+        border-color: #555;
+      }
+
+      .btn-apply {
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 8px;
+        background-color: #f0f0f0;
+        color: #0f0f0f;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+      }
+
+      .btn-apply:hover {
+        opacity: 0.8;
+      }
+
+      /* ── Error / feedback message ── */
+      .message {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.8rem;
+        color: #dc143c;
+        min-height: 1.2rem;
+        letter-spacing: 0.3px;
+      }
+
+      /* ── Reset button ── */
+      .btn-reset {
+        padding: 0.5rem 1.2rem;
+        border: 1.5px solid #333;
+        border-radius: 8px;
+        background-color: transparent;
+        color: #555;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: border-color 0.2s ease, color 0.2s ease;
+      }
+
+      .btn-reset:hover {
+        border-color: #666;
+        color: #aaa;
+      }
+
+      /* ── Click counter ── */
+      .counter {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.8rem;
+        color: #444;
+      }
+
+      .counter span {
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="header">
+      <h1>Color Switcher</h1>
+      <p>// your dom practice ground</p>
+    </div>
+
+    <!-- The box whose background color will change -->
+    <div class="color-box">
+    </div>
+
+    <!-- Shows the current color name or hex -->
+    <p class="color-name">no color selected</p>
+
+    <!-- Preset color buttons -->
+    <div class="btn-group">
+      <button class="btn btn-crimson">Crimson</button>
+      <button class="btn btn-ocean">Ocean</button>
+      <button class="btn btn-forest">Forest</button>
+      <button class="btn btn-amber">Amber</button>
+      <button class="btn btn-violet">Violet</button>
+    </div>
+
+    <!-- Custom hex color input -->
+    <div class="custom-section">
+      <label>or enter a hex code</label>
+      <div class="input-row">
+        <input class="hex-input" type="text" placeholder="#e.g. #ff6600" />
+        <button class="btn-apply">Apply</button>
+      </div>
+      <!-- Error or feedback message goes here -->
+      <p class="message"></p>
+    </div>
+
+    <!-- Reset button -->
+    <button class="btn-reset">Reset</button>
+
+    <!-- Click counter -->
+    <p class="counter">colors applied: <span class="count">0</span></p>
+
+    <script src="script.js"></script>
+  </body>
+</html>
