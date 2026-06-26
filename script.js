@@ -1,53 +1,35 @@
 "use strict";
-let count = 0;
-document.querySelector(".btn-crimson").addEventListener("click", function () {
-  document.querySelector(".color-box").style.backgroundColor = "#dc143c";
-  document.querySelector(".color-name").textContent = "Crimson";
-  count++;
-  document.querySelector('.count').textContent = count;
-});
-document.querySelector(".btn-ocean  ").addEventListener("click", function () {
-  document.querySelector(".color-box").style.backgroundColor = "#0077b6";
-  document.querySelector(".color-name").textContent = "Ocean";
-  count++;
-  document.querySelector('.count').textContent = count;
-});
-document.querySelector(".btn-forest").addEventListener("click", function () {
-  document.querySelector(".color-box").style.backgroundColor = "#2d6a4f";
-  document.querySelector(".color-name").textContent = "Forest";
-  count++;
-  document.querySelector('.count').textContent = count;
-});
-document.querySelector(".btn-amber").addEventListener("click", function () {
-  document.querySelector(".color-box").style.backgroundColor = "#f4a261";
-  document.querySelector(".color-name").textContent = "Amber";
-  count++;
-  document.querySelector('.count').textContent = count;
-});
-document.querySelector(".btn-violet").addEventListener("click", function () {
-  document.querySelector(".color-box").style.backgroundColor = "#7b2d8b";
-  document.querySelector(".color-name").textContent = "Violet";
-  count++;
-  document.querySelector('.count').textContent = count;
+
+//variables
+let counter = 0;
+document.querySelectorAll(".btn").forEach((v) => {
+  v.addEventListener("click", function () {
+    const color = this.dataset.color;
+    const name = this.dataset.name;
+    document.querySelector(".color-name").textContent = name;
+    document.querySelector(".color-box").style.backgroundColor = color;
+    counter++;
+    document.querySelector(".count").textContent = counter;
+  });
 });
 
-//by input
-
+//hex code
 document.querySelector(".btn-apply").addEventListener("click", function () {
-  const guess = document.querySelector(".hex-input").value;
-  if (guess.startsWith("#") && guess.length === 7) {
+  const input = document.querySelector(".hex-input").value;
+  if (input.startsWith("#") && input.length === 7) {
     document.querySelector(".message").textContent = "";
-    document.querySelector(".color-box").style.backgroundColor = guess;
-    document.querySelector(".color-name").textContent = guess;
+    document.querySelector(".color-box").style.backgroundColor = input;
+    counter++;
+    document.querySelector(".count").textContent = counter;
   } else {
-    document.querySelector(".message").textContent = "Invalid hex code ⛔";
+    document.querySelector(".message").textContent = "Invalid Hex⛔";
   }
 });
-
-//reset logic
+//reset button
 document.querySelector(".btn-reset").addEventListener("click", function () {
-  document.querySelector(".color-box").style.backgroundColor = "#000";
-  document.querySelector(".color-name").textContent = "No Color Selected";
+  counter = 0;
+  document.querySelector(".count").textContent = counter;
   document.querySelector(".message").textContent = "";
+  document.querySelector(".color-box").style.backgroundColor = "#222";
   document.querySelector(".hex-input").value = "";
 });
